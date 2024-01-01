@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22A380" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="ActivityGoalEntity" representedClassName="ActivityGoalEntity" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="goalIntervalType" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="goalSeconds" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isArchived" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="projects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FocusProjectEntity" inverseName="activityGoals" inverseEntity="FocusProjectEntity"/>
+    </entity>
+    <entity name="FocusListEntity" representedClassName="FocusListEntity" isAbstract="YES" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FocusProjectEntity" inverseName="list" inverseEntity="FocusProjectEntity"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FocusListTaskEntity" inverseName="list" inverseEntity="FocusListTaskEntity"/>
+    </entity>
+    <entity name="FocusListTaskEntity" representedClassName="FocusListTaskEntity" syncable="YES">
+        <attribute name="completed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="inProgress" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FocusListEntity" inverseName="tasks" inverseEntity="FocusListEntity"/>
+    </entity>
+    <entity name="FocusProjectEntity" representedClassName="FocusProjectEntity" syncable="YES">
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="emoji" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="scheduledDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="themeColorHexString" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="activityGoals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ActivityGoalEntity" inverseName="projects" inverseEntity="ActivityGoalEntity"/>
+        <relationship name="list" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FocusListEntity" inverseName="project" inverseEntity="FocusListEntity"/>
+        <relationship name="recurrence" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FocusProjectRecurrenceEntity" inverseName="instances" inverseEntity="FocusProjectRecurrenceEntity"/>
+        <relationship name="recurrenceTemplate" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FocusProjectRecurrenceEntity" inverseName="template" inverseEntity="FocusProjectRecurrenceEntity"/>
+        <relationship name="timer" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TimerEntity" inverseName="project" inverseEntity="TimerEntity"/>
+    </entity>
+    <entity name="FocusProjectRecurrenceEntity" representedClassName="FocusProjectRecurrenceEntity" syncable="YES">
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="reminderDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="repeatingDays" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData"/>
+        <relationship name="instances" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FocusProjectEntity" inverseName="recurrence" inverseEntity="FocusProjectEntity"/>
+        <relationship name="template" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FocusProjectEntity" inverseName="recurrenceTemplate" inverseEntity="FocusProjectEntity"/>
+    </entity>
+    <entity name="SessionListEntity" representedClassName="SessionListEntity" parentEntity="FocusListEntity" syncable="YES"/>
+    <entity name="SettingsEntity" representedClassName="SettingsEntity" syncable="YES">
+        <attribute name="breakSound" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isZenModeOn" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="keepDeviceAwake" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="numberOfTimerSessions" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="purchasedPro" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="shouldAutostartNextBreakSession" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="shouldAutostartNextWorkSession" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="themeColorHexString" optional="YES" attributeType="String"/>
+        <attribute name="totalSecondsInLongBreakSession" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalSecondsInShortBreakSession" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalSecondsInWorkSession" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="usingCustomColor" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="usingTodoList" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="workSound" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="SingleTaskListEntity" representedClassName="SingleTaskListEntity" parentEntity="FocusListEntity" syncable="YES"/>
+    <entity name="StandardListEntity" representedClassName="StandardListEntity" parentEntity="FocusListEntity" syncable="YES"/>
+    <entity name="StandardTimerEntity" representedClassName="StandardTimerEntity" parentEntity="TimerEntity" syncable="YES">
+        <attribute name="autostartBreakSession" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="autostartWorkSession" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="breakSound" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="completedSessionCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="currentSession" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isComplete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isRunning" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="longBreakLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sessionCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shortBreakLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timeLeftInSession" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalBreakTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalWorkTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="wasStarted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="workSessionLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="workSound" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="StopwatchTimerEntity" representedClassName="StopwatchTimerEntity" parentEntity="TimerEntity" syncable="YES">
+        <attribute name="breakTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="currentSession" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="elapsedBreakTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="elapsedWorkTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="hasBegun" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isComplete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="isRunning" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="workTime" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="TimerEntity" representedClassName="TimerEntity" isAbstract="YES" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FocusProjectEntity" inverseName="timer" inverseEntity="FocusProjectEntity"/>
+    </entity>
+    <entity name="ToDoListProjectEntity" representedClassName="ToDoListProjectEntity" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lastOpenedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="showCompletedTasks" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ToDoListTaskEntity" inverseName="project" inverseEntity="ToDoListTaskEntity"/>
+    </entity>
+    <entity name="ToDoListTaskEntity" representedClassName="ToDoListTaskEntity" syncable="YES">
+        <attribute name="completed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="inProgress" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ToDoListProjectEntity" inverseName="tasks" inverseEntity="ToDoListProjectEntity"/>
+    </entity>
+    <entity name="TomatoTimerEntity" representedClassName="TomatoTimerEntity" syncable="YES">
+        <attribute name="completedSessionsCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="currentSession" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isRunning" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="longBreakLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="numberOfTimerSessions" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shortBreakLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shouldAutostartNextBreakSession" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="shouldAutostartNextWorkSession" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="timeLeftInCurrentSession" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="workSessionLength" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="UserEntity" representedClassName="UserEntity" syncable="YES">
+        <attribute name="purchasedPlus" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+    </entity>
+</model>
